@@ -76,6 +76,18 @@ function run(nodes) {
 						if(usefont) {
 							return "<span class='emojifont' style='font-size:" + scale + "em !important' >" + c + "</span>";
 						} else {
+							// emoji variation sequences
+							var vs = '';
+							if (c.length >= 2) {
+								if (c[c.length - 1] === '\uFE0E') {
+									// U+FE0E VARIATION SELECTOR-15 (for non-emoji)
+									return c.substr(0, c.length - 1);
+								} else if (c[c.length - 1] === '\uFE0F') {
+									// U+FE0F VARIATION SELECTOR-16 (for emoji)
+									c = c.substr(0, c.length - 1);
+									vs = '\uFE0F';
+								}
+							}
 							var matched = valid.filter(
 								function(element, index, array) {
 									if(element.chars.indexOf(c) != -1) {
@@ -85,7 +97,7 @@ function run(nodes) {
 							);
 					
 							if(matched.length > 0) {
-								return get_replacement(matched[0], c);
+								return get_replacement(matched[0], c + vs);
 							}
 						}
 					
@@ -113,7 +125,7 @@ function create_pattern(items) {
             chars.forEach(
                 function (element, index, array) {
                     if(hidden.indexOf(element) == -1) {
-                        pattern += (element + "|");
+                        pattern += (element + "[\uFE0F\uFE0E]?|");
                     }
                 }
             );
