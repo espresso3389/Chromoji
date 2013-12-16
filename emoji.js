@@ -207,7 +207,8 @@ $(document).ready(
                 var blacklisted = false;
                 $.each(blacklist,
                     function(key, value) {
-                        if(document.domain.indexOf(value) == document.domain.length - value.length) {
+                    	var pos = document.domain.indexOf(value);
+                        if(pos >= 0 && pos == document.domain.length - value.length) {
                             blacklisted = true;
                         }
                     }
