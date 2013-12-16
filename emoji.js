@@ -37,7 +37,7 @@ function on_mutation(mutations) {
     }
 }
 
-function get_replacement(matched) {
+function get_replacement(matched, code) {
 	var image = matched.image;
 	var name = "";
 	var id = matched.id;
@@ -51,7 +51,7 @@ function get_replacement(matched) {
 	var absolute = chrome.extension.getURL(relative);
 	var element = "<img src='" + absolute + "' class='emoji'";
 	if(name != "") {
-		element += " title='" + name + "' alt='" + name + "' ";
+		element += " title='" + name + "' alt='" + code + "' ";
 	}
 	element += "style='height:" + scale + "em !important; ";
 	element += "width:" + scale + "em !important; ";
@@ -85,7 +85,7 @@ function run(nodes) {
 							);
 					
 							if(matched.length > 0) {
-								return get_replacement(matched[0]);
+								return get_replacement(matched[0], c);
 							}
 						}
 					
